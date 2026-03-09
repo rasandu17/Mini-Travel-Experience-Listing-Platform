@@ -1,5 +1,3 @@
-// Git commit suggestion: "feat: add responsive Navbar component with auth"
-
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';

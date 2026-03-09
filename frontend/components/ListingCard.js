@@ -1,5 +1,3 @@
-// Git commit suggestion: "feat: add ListingCard component for feed display"
-
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 
