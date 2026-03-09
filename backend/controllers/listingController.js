@@ -1,5 +1,3 @@
-// Git commit suggestion: "feat: implement listing CRUD operations"
-
 const Listing = require('../models/Listing');
 
 // @desc    Create new listing

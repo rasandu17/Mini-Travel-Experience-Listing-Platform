@@ -1,5 +1,3 @@
-// Git commit suggestion: "feat: implement user registration and login API"
-
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
