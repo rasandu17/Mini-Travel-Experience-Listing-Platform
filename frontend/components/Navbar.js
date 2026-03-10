@@ -26,7 +26,8 @@ export default function Navbar() {
           position: sticky;
           top: 0;
           z-index: 1050;
-          background: transparent;
+          background: #ffffff;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
           padding-top: 15px;
           padding-bottom: 15px;
         }
