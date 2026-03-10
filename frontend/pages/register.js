@@ -30,7 +30,9 @@ export default function Register() {
       const data = await register(formData);
       
       // Save token to localStorage
-      saveToken(data.token);
+      if (data && data.token) {
+        saveToken(data.token);
+      }
       
       // Redirect to feed page
       router.push('/feed');
@@ -42,106 +44,226 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans text-gray-900 selection:bg-indigo-100 selection:text-indigo-900">
-      <Navbar />
+    <>
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        
+        body {
+          background-color: #fdf8ee;
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          color: #4a3b2c;
+          margin: 0;
+        }
 
-      <main className="flex-grow flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-16 w-full">
-        <div className="w-full max-w-md bg-white rounded-3xl shadow-sm border border-gray-200 p-8 sm:p-10 relative overflow-hidden">
-          {/* Subtle top decoration */}
-          <div className="absolute top-0 left-0 w-full h-1.5 bg-indigo-600"></div>
-          
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">
-              Create Account
-            </h1>
-            <p className="text-gray-500">
-              Join our travel community today
-            </p>
-          </div>
+        .auth-container {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+        }
 
-          {error && (
-            <div className="bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-xl mb-6 text-sm font-medium">
-              {error}
-            </div>
-          )}
+        .auth-main {
+          flex-grow: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 2rem 1rem;
+        }
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Name Field */}
-            <div className="space-y-1.5">
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                Full Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-400"
-                placeholder="John Doe"
-              />
-            </div>
+        .auth-card {
+          width: 100%;
+          max-width: 450px;
+          background: #ffffff;
+          border-radius: 20px;
+          box-shadow: 0 10px 40px rgba(65, 50, 36, 0.08);
+          padding: 3rem 2.5rem;
+          position: relative;
+          overflow: hidden;
+        }
 
-            {/* Email Field */}
-            <div className="space-y-1.5">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-400"
-                placeholder="john@example.com"
-              />
-            </div>
+        .auth-title {
+          font-size: 2rem;
+          font-weight: 800;
+          color: #413224;
+          margin-bottom: 0.5rem;
+          text-align: center;
+          letter-spacing: -0.5px;
+        }
 
-            {/* Password Field */}
-            <div className="space-y-1.5">
-              <div className="flex justify-between items-center">
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                  Password
-                </label>
-                <span className="text-xs text-gray-500">Min. 6 chars</span>
+        .auth-subtitle {
+          color: #a9927b;
+          text-align: center;
+          margin-bottom: 2.5rem;
+          font-weight: 500;
+        }
+
+        .form-label {
+          display: block;
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: #6d5d4b;
+          margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+          width: 100%;
+          padding: 0.8rem 1.2rem;
+          border-radius: 12px;
+          border: 1.5px solid #e8decb;
+          background-color: #fcfaf6;
+          color: #413224;
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-size: 1rem;
+          transition: all 0.2s;
+          outline: none;
+          box-sizing: border-box;
+        }
+
+        .form-input:focus {
+          border-color: #e57b2f;
+          background-color: #fff;
+          box-shadow: 0 0 0 4px rgba(229, 123, 47, 0.1);
+        }
+
+        .form-input::placeholder {
+          color: #c4b09b;
+        }
+
+        .btn-orange-full {
+          width: 100%;
+          background-color: #e57b2f;
+          color: white;
+          border-radius: 12px;
+          padding: 1rem;
+          font-weight: 700;
+          border: none;
+          transition: background-color 0.3s;
+          font-size: 1.05rem;
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          margin-top: 1rem;
+          cursor: pointer;
+        }
+
+        .btn-orange-full:hover {
+          background-color: #cf6922;
+        }
+
+        .btn-orange-full:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+
+        .auth-link-text {
+          color: #6d5d4b;
+          font-size: 0.95rem;
+          font-weight: 500;
+          margin: 0;
+        }
+
+        .auth-link {
+          color: #e57b2f;
+          font-weight: 700;
+          text-decoration: none;
+          transition: color 0.2s;
+        }
+
+        .auth-link:hover {
+          color: #cf6922;
+          text-decoration: underline;
+        }
+
+        .error-message {
+          background-color: #fef2f2;
+          color: #ef4444;
+          padding: 0.8rem;
+          border-radius: 10px;
+          font-size: 0.9rem;
+          font-weight: 500;
+          margin-bottom: 1.5rem;
+          border: 1px solid #fca5a5;
+          text-align: center;
+        }
+      `}</style>
+
+      <div className="auth-container">
+        <Navbar />
+
+        <main className="auth-main">
+          <div className="auth-card">
+            
+            <h1 className="auth-title">Create Account</h1>
+            <p className="auth-subtitle">Join our travel community today</p>
+
+            {error && <div className="error-message">{error}</div>}
+
+            <form onSubmit={handleSubmit}>
+              <div style={{ marginBottom: '1.25rem' }}>
+                <label htmlFor="name" className="form-label">Full Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="form-input"
+                  placeholder="John Doe"
+                />
               </div>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                minLength={6}
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition-all text-gray-900 placeholder-gray-400"
-                placeholder="••••••••"
-              />
+
+              <div style={{ marginBottom: '1.25rem' }}>
+                <label htmlFor="email" className="form-label">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="form-input"
+                  placeholder="john@example.com"
+                />
+              </div>
+
+              <div style={{ marginBottom: '1.25rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <label htmlFor="password" className="form-label" style={{ marginBottom: 0 }}>Password</label>
+                  <span style={{ fontSize: '0.8rem', color: '#c4b09b', fontWeight: 600 }}>Min. 6 chars</span>
+                </div>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  minLength={6}
+                  className="form-input"
+                  style={{ marginTop: '0.5rem' }}
+                  placeholder="••••••••"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn-orange-full"
+              >
+                {loading ? 'Creating Account...' : 'Sign Up'}
+              </button>
+            </form>
+
+            <div style={{ marginTop: '2.5rem', textAlign: 'center', borderTop: '1px solid #e8decb', paddingTop: '1.5rem' }}>
+              <p className="auth-link-text">
+                Already have an account?{' '}
+                <Link href="/login" className="auth-link">
+                  Log In
+                </Link>
+              </p>
             </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full mt-4 inline-flex items-center justify-center bg-indigo-600 text-white py-3.5 px-4 rounded-xl font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
-            >
-              {loading ? 'Creating Account...' : 'Sign Up'}
-            </button>
-          </form>
-
-          {/* Login Link */}
-          <div className="mt-8 pt-6 border-t border-gray-100 text-center">
-            <p className="text-gray-500 text-sm">
-              Already have an account?{' '}
-              <Link href="/login" className="text-indigo-600 font-medium hover:text-indigo-700 hover:underline transition-colors">
-                Log In
-              </Link>
-            </p>
+            
           </div>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </>
   );
 }

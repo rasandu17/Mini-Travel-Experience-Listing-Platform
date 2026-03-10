@@ -25,56 +25,106 @@ export default function Feed() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
+    <>
+      <style jsx global>{`
+        body {
+          background-color: #fdf8ee;
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          color: #4a3b2c;
+        }
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Explore Travel Experiences
-          </h1>
-          <p className="text-gray-600">
-            Discover amazing adventures shared by travelers around the world
-          </p>
-        </div>
+        .header-subtitle {
+          color: #e57b2f;
+          font-weight: 800;
+          font-size: 0.85rem;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+        }
 
-        {/* Loading State */}
-        {loading && (
-          <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        .header-title {
+          font-weight: 800;
+          font-size: 2.5rem;
+          color: #413224;
+          line-height: 1.2;
+          max-width: 600px;
+          margin: 0 auto;
+        }
+
+        .masonry-grid {
+          column-count: 3;
+          column-gap: 24px;
+          width: 100%;
+        }
+
+        @media (max-width: 991px) {
+          .masonry-grid {
+            column-count: 2;
+          }
+        }
+
+        @media (max-width: 767px) {
+          .masonry-grid {
+            column-count: 1;
+          }
+        }
+
+        .masonry-item {
+          break-inside: avoid;
+          margin-bottom: 24px;
+        }
+      `}</style>
+      
+      <div className="d-flex flex-column min-vh-100 position-relative overflow-hidden">
+        <Navbar />
+
+        <main className="flex-grow-1 pt-4 pb-5 px-3 px-md-4 px-lg-5">
+          <div className="container-xl" style={{ maxWidth: '1200px' }}>
+            
+            {/* Header */}
+            <div className="text-center mb-5">
+              <span className="header-subtitle d-block mb-2">OUR BLOG</span>
+              <h1 className="header-title">
+                Explore & Discover: Insights<br />from Our Travel Experts
+              </h1>
+            </div>
+
+            {/* Error State */}
+            {error && (
+              <div className="alert alert-danger" role="alert">
+                {error}
+              </div>
+            )}
+
+            {/* Loading State */}
+            {loading ? (
+              <div className="d-flex justify-content-center py-5">
+                <div className="spinner-border text-warning" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            ) : listings.length === 0 ? (
+              <div className="text-center py-5">
+                <div style={{ fontSize: '4rem' }} className="mb-3">🌍</div>
+                <h2 className="h4 font-weight-bold text-dark mb-2">
+                  No blog posts yet
+                </h2>
+                <p className="text-muted">
+                  Be the first to share your travel experience!
+                </p>
+              </div>
+            ) : (
+              <div className="masonry-grid">
+                {listings.map((listing) => (
+                  <div key={listing._id} className="masonry-item">
+                    <ListingCard listing={listing} />
+                  </div>
+                ))}
+              </div>
+            )}
+
           </div>
-        )}
-
-        {/* Error State */}
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
-            {error}
-          </div>
-        )}
-
-        {/* Empty State */}
-        {!loading && !error && listings.length === 0 && (
-          <div className="text-center py-20">
-            <div className="text-6xl mb-4">🌍</div>
-            <h2 className="text-2xl font-bold text-gray-700 mb-2">
-              No listings yet
-            </h2>
-            <p className="text-gray-500">
-              Be the first to share a travel experience!
-            </p>
-          </div>
-        )}
-
-        {/* Listings Grid */}
-        {!loading && !error && listings.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {listings.map((listing) => (
-              <ListingCard key={listing._id} listing={listing} />
-            ))}
-          </div>
-        )}
+        </main>
       </div>
-    </div>
+    </>
   );
 }

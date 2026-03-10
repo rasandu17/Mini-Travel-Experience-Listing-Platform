@@ -20,64 +20,127 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 w-full">
-          
-          {/* Logo/Brand */}
-          <Link href="/" className="flex flex-row items-center gap-2.5 group flex-shrink-0">
-            <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-indigo-600 text-white shadow-sm group-hover:bg-indigo-700 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/><circle cx="12" cy="12" r="10"/></svg>
-            </div>
-            <span className="text-xl font-bold tracking-tight text-gray-900 group-hover:text-indigo-600 transition-colors">
-              TravelHub
-            </span>
-          </Link>
+    <>
+      <style jsx>{`
+        .navbar-custom {
+          position: sticky;
+          top: 0;
+          z-index: 1050;
+          background: transparent;
+          padding-top: 15px;
+          padding-bottom: 15px;
+        }
+        
+        .nav-text {
+          color: #413224;
+          font-weight: 500;
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          transition: color 0.2s;
+        }
 
-          {/* Navigation Links */}
-          <div className="flex flex-row items-center gap-2 sm:gap-4 flex-shrink-0">
-            <Link
-              href="/feed"
-              className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
-            >
-              Explore
+        .nav-text:hover {
+          color: #e57b2f;
+        }
+
+        .logo-box {
+          color: #e57b2f;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .brand-text {
+          color: #413224;
+          font-size: 1.4rem;
+          font-weight: 800;
+          letter-spacing: -0.5px;
+          font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .btn-orange {
+          background-color: #e57b2f;
+          color: white;
+          border-radius: 50px;
+          padding: 8px 24px;
+          font-weight: 700;
+          border: none;
+          transition: background-color 0.3s;
+          font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .btn-orange:hover {
+          background-color: #cf6922;
+          color: white;
+        }
+        
+        .nav-center {
+          display: flex;
+          align-items: center;
+          gap: 30px;
+        }
+      `}</style>
+      
+      <nav className="navbar-custom">
+        <div className="container-xl px-3 px-sm-4 px-lg-5">
+          <div className="d-flex align-items-center justify-content-between w-100">
+            
+            {/* Logo/Brand */}
+            <Link href="/" className="d-flex flex-row align-items-center gap-2 text-decoration-none">
+              <div className="logo-box">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <span className="brand-text">
+                TravelHub
+              </span>
             </Link>
 
-            {isLoggedIn ? (
-              <>
-                <Link
-                  href="/create-listing"
-                  className="hidden sm:inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 transition-colors whitespace-nowrap"
-                >
-                  Create Listing
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gray-900 hover:bg-gray-800 transition-colors whitespace-nowrap"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <div className="flex flex-row items-center gap-2 border-l border-gray-200 pl-2 ml-2 sm:pl-4 sm:ml-2">
-                <Link
-                  href="/login"
-                  className="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors whitespace-nowrap"
-                >
-                  Log In
-                </Link>
-                <Link
-                  href="/register"
-                  className="inline-flex items-center justify-center px-5 py-2 rounded-lg text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors shadow-sm whitespace-nowrap"
-                >
-                  Sign Up
-                </Link>
-              </div>
-            )}
+            {/* Middle Nav Links */}
+            <div className="d-none d-md-flex align-items-center gap-4 nav-center">
+               <div style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', opacity: 0.8 }}>
+                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#413224" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="10" x2="20" y1="18" y2="18"/></svg>
+               </div>
+               <Link href="/about" className="text-decoration-none nav-text">About Us</Link>
+               <Link href="/feed" className="text-decoration-none nav-text">Destination</Link>
+            </div>
+
+            {/* Right side CTAs */}
+            <div className="d-flex flex-row align-items-center gap-2 gap-sm-3">
+              {isLoggedIn ? (
+                <>
+                  <Link
+                    href="/create-listing"
+                    className="nav-text text-decoration-none d-none d-sm-block me-2"
+                  >
+                    Create Listing
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="btn-orange text-decoration-none"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <div className="d-flex flex-row align-items-center gap-3">
+                  <Link
+                    href="/login"
+                    className="nav-text text-decoration-none d-none d-sm-block"
+                  >
+                    Log In
+                  </Link>
+                  <Link
+                    href="/register"
+                    className="btn-orange text-decoration-none"
+                  >
+                    Enquire Now
+                  </Link>
+                </div>
+              )}
+            </div>
+            
           </div>
-          
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }

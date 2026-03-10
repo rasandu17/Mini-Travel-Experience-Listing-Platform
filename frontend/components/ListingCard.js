@@ -1,76 +1,80 @@
 import Link from 'next/link';
-import { formatDistanceToNow } from 'date-fns';
 
 export default function ListingCard({ listing }) {
-  // Format the timestamp to "X hours/days ago"
-  const timeAgo = formatDistanceToNow(new Date(listing.createdAt), {
-    addSuffix: true,
-  });
+  // Format the date if valid, else use current
+  let dateStr = '';
+  try {
+    const d = new Date(listing.createdAt || Date.now());
+    dateStr = d.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  } catch (e) {
+    dateStr = 'May 13, 2025';
+  }
+
+  // Fallback image if missing
+  const defaultImage = 'https://images.unsplash.com/photo-1542314831-c6a4d27ce66f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80';
 
   return (
-    <Link href={`/listing/${listing._id}`}>
-      <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden cursor-pointer h-full">
-        {/* Image */}
-        <div className="relative h-48 w-full overflow-hidden">
-          <img
-            src={listing.imageUrl}
-            alt={listing.title}
-            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-          />
-          {listing.price && (
-            <div className="absolute top-3 right-3 bg-white px-3 py-1 rounded-full shadow-md">
-              <span className="text-blue-600 font-bold">${listing.price}</span>
-            </div>
-          )}
-        </div>
+    <Link href={`/listing/${listing._id}`} className="text-decoration-none">
+      <div className="listing-card-custom mb-3">
+        <img
+          src={listing.imageUrl || defaultImage}
+          alt={listing.title}
+          className="listing-image"
+        />
+        <h3 className="listing-title mt-3 mb-1 line-clamp-2">
+          {listing.title}
+        </h3>
+        <p className="listing-date mb-0">
+          {dateStr}
+        </p>
 
-        {/* Content */}
-        <div className="p-4">
-          {/* Title */}
-          <h3 className="text-lg font-bold text-gray-800 mb-2 line-clamp-1">
-            {listing.title}
-          </h3>
-
-          {/* Location */}
-          <div className="flex items-center text-gray-600 mb-2">
-            <svg
-              className="w-4 h-4 mr-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-            </svg>
-            <span className="text-sm">{listing.location}</span>
-          </div>
-
-          {/* Description */}
-          <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-            {listing.description}
-          </p>
-
-          {/* Footer - Creator and Time */}
-          <div className="flex items-center justify-between text-xs text-gray-500 pt-3 border-t">
-            <div className="flex items-center">
-              <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold mr-2">
-                {listing.createdBy?.name?.[0]?.toUpperCase() || 'U'}
-              </div>
-              <span>{listing.createdBy?.name || 'Unknown'}</span>
-            </div>
-            <span>{timeAgo}</span>
-          </div>
-        </div>
+        <style jsx>{`
+          .listing-card-custom {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+          }
+          
+          .listing-card-custom:hover .listing-image {
+            opacity: 0.95;
+            transform: scale(1.01);
+          }
+          
+          .listing-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            object-fit: cover;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+          }
+          
+          .listing-title {
+            color: #413224;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 800; /* made extra bold to match image */
+            line-height: 1.4;
+          }
+          
+          .listing-date {
+            color: #8c7e71;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+          }
+          
+          .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+        `}</style>
       </div>
     </Link>
   );
