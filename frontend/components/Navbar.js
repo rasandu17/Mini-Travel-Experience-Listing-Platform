@@ -32,7 +32,7 @@ export default function Navbar() {
         }
         
         .nav-text {
-          color: #413224;
+          color: #19211E;
           font-weight: 500;
           font-family: 'Plus Jakarta Sans', sans-serif;
           transition: color 0.2s;
@@ -58,19 +58,20 @@ export default function Navbar() {
         }
 
         .btn-orange {
-          background-color: #e57b2f;
-          color: white;
-          border-radius: 50px;
-          padding: 8px 24px;
-          font-weight: 700;
-          border: none;
+          background-color: #e57b2f !important;
+          color: white !important;
+          border-radius: 50px !important;
+          padding: 8px 24px !important;
+          font-weight: 700 !important;
+          border: none !important;
           transition: background-color 0.3s;
           font-family: 'Plus Jakarta Sans', sans-serif;
+          display: inline-block;
         }
 
         .btn-orange:hover {
-          background-color: #cf6922;
-          color: white;
+          background-color: #cf6922 !important;
+          color: white !important;
         }
         
         .nav-center {
@@ -96,22 +97,26 @@ export default function Navbar() {
 
             {/* Middle Nav Links */}
             <div className="d-none d-md-flex align-items-center gap-4 nav-center">
-               <div style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', opacity: 0.8 }}>
-                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#413224" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="10" x2="20" y1="18" y2="18"/></svg>
-               </div>
-               <Link href="/about" className="text-decoration-none nav-text">About Us</Link>
-               <Link href="/feed" className="text-decoration-none nav-text">Destination</Link>
+               <Link href="/about" className="text-decoration-none nav-text" style={{ color: '#413224' }}>About Us</Link>
+               <Link href="/feed" className="text-decoration-none nav-text" style={{ color: '#413224' }}>Destination</Link>
             </div>
 
             {/* Right side CTAs */}
             <div className="d-flex flex-row align-items-center gap-2 gap-sm-3">
               {isLoggedIn ? (
                 <>
-                  <Link
-                    href="/create-listing"
-                    className="nav-text text-decoration-none d-none d-sm-block me-2"
-                  >
-                    Create Listing
+                  <Link href="/create-listing" legacyBehavior passHref>
+                    <a
+                      className="d-none d-sm-block me-2"
+                      style={{
+                        color: '#413224',
+                        fontWeight: '500',
+                        fontFamily: '"Plus Jakarta Sans", sans-serif',
+                        textDecoration: 'none'
+                      }}
+                    >
+                      Create Listing
+                    </a>
                   </Link>
                   <button
                     onClick={handleLogout}
@@ -122,17 +127,33 @@ export default function Navbar() {
                 </>
               ) : (
                 <div className="d-flex flex-row align-items-center gap-3">
-                  <Link
-                    href="/login"
-                    className="nav-text text-decoration-none d-none d-sm-block"
-                  >
-                    Log In
+                  <Link href="/login" legacyBehavior passHref>
+                    <a
+                      className="d-none d-sm-block"
+                      style={{
+                        color: '#413224',
+                        fontWeight: '500',
+                        fontFamily: '"Plus Jakarta Sans", sans-serif',
+                        textDecoration: 'none'
+                      }}
+                    >
+                      Log In
+                    </a>
                   </Link>
-                  <Link
-                    href="/register"
-                    className="btn-orange text-decoration-none"
-                  >
-                    Enquire Now
+                  <Link href="/register" legacyBehavior passHref>
+                    <a style={{
+                      backgroundColor: '#e57b2f',
+                      color: 'white',
+                      borderRadius: '50px',
+                      padding: '8px 24px',
+                      fontWeight: '700',
+                      border: 'none',
+                      textDecoration: 'none',
+                      display: 'inline-block',
+                      fontFamily: '"Plus Jakarta Sans", sans-serif'
+                    }}>
+                      Enquire Now
+                    </a>
                   </Link>
                 </div>
               )}

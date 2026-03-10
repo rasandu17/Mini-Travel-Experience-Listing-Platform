@@ -117,7 +117,7 @@ export default function Login() {
         .form-input:focus {
           border-color: #e57b2f;
           background-color: #fff;
-          box-shadow: 0 0 0 4px rgba(229, 123, 47, 0.1);
+          box-shadow: 0 0 0 4px rgba(229, 123, 47, 0.12);
         }
 
         .form-input::placeholder {

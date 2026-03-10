@@ -225,9 +225,9 @@ export default function ListingDetail() {
       {deleteModal && (
         <div className="modal-overlay" onClick={() => !deleting && setDeleteModal(false)}>
           <div className="modal-box" onClick={e => e.stopPropagation()}>
-          <div style={{ color: '#e74c3c', marginBottom: '1rem' }}><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></div>
-            <h2 style={{ fontWeight: 800, color: '#413224', marginBottom: '0.5rem' }}>Delete Listing?</h2>
-            <p style={{ color: '#a9927b', marginBottom: '2rem' }}>
+          <div style={{ color: '#EB7400', marginBottom: '1rem' }}><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></div>
+            <h2 style={{ fontWeight: 800, color: '#19211E', marginBottom: '0.5rem' }}>Delete Listing?</h2>
+            <p style={{ color: '#95A19D', marginBottom: '2rem' }}>
               This action cannot be undone. The listing will be permanently removed.
             </p>
             <div className="d-flex gap-3 justify-content-center">
@@ -241,7 +241,7 @@ export default function ListingDetail() {
               <button
                 onClick={handleDelete}
                 disabled={deleting}
-                style={{ flex: 1, padding: '12px', borderRadius: '12px', border: 'none', background: '#e74c3c', color: '#fff', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', opacity: deleting ? 0.7 : 1 }}
+                style={{ flex: 1, padding: '12px', borderRadius: '12px', border: 'none', background: '#EB7400', color: '#fff', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', opacity: deleting ? 0.7 : 1 }}
               >
                 {deleting ? 'Deleting…' : 'Yes, Delete'}
               </button>

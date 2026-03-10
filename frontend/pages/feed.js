@@ -220,7 +220,9 @@ export default function Feed() {
               </div>
             ) : listings.length === 0 ? (
               <div className="text-center py-5">
-                <div style={{ fontSize: '4rem' }} className="mb-3">🌍</div>
+                <div style={{ marginBottom: '1rem' }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="none" stroke="#c4b09b" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                </div>
                 <h2 className="h4 fw-bold mb-2" style={{ color: '#413224' }}>
                   {search ? `No results for "${search}"` : 'No listings yet'}
                 </h2>

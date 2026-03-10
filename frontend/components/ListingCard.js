@@ -53,7 +53,8 @@ export default function ListingCard({ listing }) {
           <div className="d-flex align-items-center gap-2">
             {listing.likes?.length > 0 && (
               <span className="like-pill">
-                ♥ {listing.likes.length}
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none" style={{ marginRight: '4px' }}><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                {listing.likes.length}
               </span>
             )}
             <p className="listing-date mb-0 text-end">
@@ -114,7 +115,7 @@ export default function ListingCard({ listing }) {
           }
           
           .listing-title {
-            color: #413224;
+            color: #19211E;
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 1.15rem;
             font-weight: 800;
@@ -122,7 +123,7 @@ export default function ListingCard({ listing }) {
           }
 
           .listing-desc {
-            color: #6d5d4b;
+            color: #4A5653;
             font-size: 0.85rem;
             line-height: 1.5;
             margin-bottom: 0.5rem;
@@ -132,7 +133,7 @@ export default function ListingCard({ listing }) {
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background: #e57b2f;
+            background: #8D153A;
             color: white;
             display: flex;
             align-items: center;
@@ -145,15 +146,15 @@ export default function ListingCard({ listing }) {
           .creator-name {
             font-size: 0.8rem;
             font-weight: 600;
-            color: #413224;
+            color: #19211E;
             max-width: 100px;
           }
 
           .like-pill {
             display: inline-flex;
             align-items: center;
-            background: #fdf0e6;
-            color: #e57b2f;
+            background: #F8E3E9;
+            color: #8D153A;
             font-size: 0.72rem;
             font-weight: 700;
             padding: 3px 10px;
@@ -162,7 +163,7 @@ export default function ListingCard({ listing }) {
           }
           
           .listing-date {
-            color: #8c7e71;
+            color: #6C7975;
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 0.75rem;
             font-weight: 500;

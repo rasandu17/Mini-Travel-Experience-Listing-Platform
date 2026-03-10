@@ -3,7 +3,7 @@ import Link from 'next/link';
 export default function Footer() {
   return (
     <footer style={{
-      background: '#2d1f13',
+      background: '#413224',
       color: 'rgba(255,255,255,0.6)',
       padding: '2rem 1.5rem',
       fontFamily: "'Plus Jakarta Sans', sans-serif",
