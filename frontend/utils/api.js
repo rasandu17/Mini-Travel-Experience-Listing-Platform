@@ -1,115 +1,123 @@
-// Git commit suggestion: "feat: add API utility helper functions"
-
 const API_BASE_URL = 'http://localhost:5000/api';
 
-// Helper function to get token from localStorage
 export const getToken = () => {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('token');
-  }
+  if (typeof window !== 'undefined') return localStorage.getItem('token');
   return null;
 };
 
-// Helper function to save token to localStorage
 export const saveToken = (token) => {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem('token', token);
-  }
+  if (typeof window !== 'undefined') localStorage.setItem('token', token);
 };
 
-// Helper function to remove token from localStorage
 export const removeToken = () => {
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem('token');
-  }
+  if (typeof window !== 'undefined') localStorage.removeItem('token');
 };
 
-// Register user
+// ──────────────────────────── AUTH ────────────────────────────
+
 export const register = async (userData) => {
-  const response = await fetch(`${API_BASE_URL}/auth/register`, {
+  const res = await fetch(`${API_BASE_URL}/auth/register`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(userData),
   });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || 'Registration failed');
-  }
-
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Registration failed');
   return data;
 };
 
-// Login user
 export const login = async (credentials) => {
-  const response = await fetch(`${API_BASE_URL}/auth/login`, {
+  const res = await fetch(`${API_BASE_URL}/auth/login`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(credentials),
   });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || 'Login failed');
-  }
-
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Login failed');
   return data;
 };
 
-// Get all listings
-export const getListings = async () => {
-  const response = await fetch(`${API_BASE_URL}/listings`);
+// ──────────────────────────── LISTINGS ────────────────────────────
 
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || 'Failed to fetch listings');
-  }
-
-  return data;
+/**
+ * Fetch all listings with optional search & pagination.
+ * @param {{ search?: string, page?: number, limit?: number }} params
+ */
+export const getListings = async ({ search = '', page = 1, limit = 9 } = {}) => {
+  const params = new URLSearchParams({ search, page, limit });
+  const res = await fetch(`${API_BASE_URL}/listings?${params}`);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Failed to fetch listings');
+  return data; // { listings, pagination }
 };
 
-// Get single listing by ID
 export const getListingById = async (id) => {
-  const response = await fetch(`${API_BASE_URL}/listings/${id}`);
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || 'Failed to fetch listing');
-  }
-
+  const res = await fetch(`${API_BASE_URL}/listings/${id}`);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Failed to fetch listing');
   return data;
 };
 
-// Create new listing (requires token)
+/** Create listing — supports FormData (image upload) or plain JSON */
 export const createListing = async (listingData) => {
   const token = getToken();
+  if (!token) throw new Error('No authentication token found');
 
-  if (!token) {
-    throw new Error('No authentication token found');
-  }
+  const isFormData = listingData instanceof FormData;
 
-  const response = await fetch(`${API_BASE_URL}/listings`, {
+  const res = await fetch(`${API_BASE_URL}/listings`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(listingData),
+    headers: isFormData
+      ? { Authorization: `Bearer ${token}` }
+      : { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: isFormData ? listingData : JSON.stringify(listingData),
   });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || 'Failed to create listing');
-  }
-
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Failed to create listing');
   return data;
+};
+
+/** Update listing — supports FormData (image upload) or plain JSON */
+export const updateListing = async (id, listingData) => {
+  const token = getToken();
+  if (!token) throw new Error('No authentication token found');
+
+  const isFormData = listingData instanceof FormData;
+
+  const res = await fetch(`${API_BASE_URL}/listings/${id}`, {
+    method: 'PUT',
+    headers: isFormData
+      ? { Authorization: `Bearer ${token}` }
+      : { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: isFormData ? listingData : JSON.stringify(listingData),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Failed to update listing');
+  return data;
+};
+
+export const deleteListing = async (id) => {
+  const token = getToken();
+  if (!token) throw new Error('No authentication token found');
+
+  const res = await fetch(`${API_BASE_URL}/listings/${id}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Failed to delete listing');
+  return data;
+};
+
+export const toggleLike = async (id) => {
+  const token = getToken();
+  if (!token) throw new Error('No authentication token found');
+
+  const res = await fetch(`${API_BASE_URL}/listings/${id}/like`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Failed to toggle like');
+  return data; // { likes: number, liked: boolean }
 };

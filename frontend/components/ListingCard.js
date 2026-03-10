@@ -17,13 +17,15 @@ export default function ListingCard({ listing }) {
 
   // Fallback image if missing
   const defaultImage = 'https://images.unsplash.com/photo-1542314831-c6a4d27ce66f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80';
+  // /uploads/ paths are proxied by Next.js rewrite → no need for absolute backend URL
+  const imgSrc = listing.imageUrl || defaultImage;
 
   return (
     <Link href={`/listing/${listing._id}`} className="text-decoration-none">
       <div className="listing-card-custom mb-3">
         <div className="image-wrapper">
           <img
-            src={listing.imageUrl || defaultImage}
+            src={imgSrc}
             alt={listing.title}
             className="listing-image"
           />
@@ -48,9 +50,16 @@ export default function ListingCard({ listing }) {
              </div>
              <span className="creator-name line-clamp-1">{listing.createdBy?.name || 'Unknown User'}</span>
           </div>
-          <p className="listing-date mb-0 text-end">
-            {timeAgo}
-          </p>
+          <div className="d-flex align-items-center gap-2">
+            {listing.likes?.length > 0 && (
+              <span className="like-pill">
+                ♥ {listing.likes.length}
+              </span>
+            )}
+            <p className="listing-date mb-0 text-end">
+              {timeAgo}
+            </p>
+          </div>
         </div>
 
         <style jsx>{`
@@ -138,6 +147,18 @@ export default function ListingCard({ listing }) {
             font-weight: 600;
             color: #413224;
             max-width: 100px;
+          }
+
+          .like-pill {
+            display: inline-flex;
+            align-items: center;
+            background: #fdf0e6;
+            color: #e57b2f;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 50px;
+            white-space: nowrap;
           }
           
           .listing-date {
