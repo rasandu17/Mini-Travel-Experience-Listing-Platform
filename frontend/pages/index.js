@@ -119,25 +119,21 @@ function PreviewCard({ listing }) {
 /* ── MAIN ────────────────────────────────────────────────────── */
 export default function Home() {
   const [featuredListings, setFeaturedListings] = useState([]);
+  const [slideshowListings, setSlideshowListings] = useState([]);
   const [heroRef, heroVis] = useReveal();
   const [statsRef, statsVis] = useReveal();
 
   useEffect(() => {
+    // Fetch listings for featured section
     getListings({ page: 1, limit: 3 })
       .then(d => setFeaturedListings(d.listings || []))
       .catch(() => {});
+    
+    // Fetch listings for slideshow (get all available)
+    getListings({ page: 1, limit: 100 })
+      .then(d => setSlideshowListings(d.listings || []))
+      .catch(() => {});
   }, []);
-
-  const destinations = [
-    { img: 'https://images.unsplash.com/photo-1516483638261-f40af5aa32c8?w=600&q=80', label: 'Tuscany, Italy' },
-    { img: 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=600&q=80', label: 'Bondi Beach, AU' },
-    { img: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80', label: 'Hong Kong' },
-    { img: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=600&q=80', label: 'Venice, Italy' },
-    { img: 'https://images.unsplash.com/photo-1547997497-f86ef80e7f10?w=600&q=80', label: 'Maldives' },
-    { img: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=80', label: 'Swiss Alps' },
-    { img: 'https://images.unsplash.com/photo-1499678329028-101435549a4e?w=600&q=80', label: 'Santorini, Greece' },
-    { img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&q=80', label: 'Road Trip' },
-  ];
 
   return (
     <>
@@ -534,15 +530,22 @@ export default function Home() {
           <div className="fade-left" />
           <div className="fade-right" />
           <div className="hero-cards-track">
-            {[...destinations, ...destinations].map((c, i) => (
-              <div
-                key={i}
-                className="hero-photo-card"
-                style={{ backgroundImage: `url(${c.img})` }}
-              >
-                <span className="hero-photo-card-label">{c.label}</span>
+            {slideshowListings.length > 0 ? (
+              [...slideshowListings, ...slideshowListings].map((listing, i) => (
+                <div
+                  key={i}
+                  className="hero-photo-card"
+                  style={{ backgroundImage: `url(${listing.imageUrl || 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&q=80'})` }}
+                >
+                  <span className="hero-photo-card-label">{listing.location}</span>
+                </div>
+              ))
+            ) : (
+              // Fallback: show message when no listings exist yet
+              <div style={{ padding: '60px 20px', textAlign: 'center', color: '#8c7e71', fontSize: '0.9rem' }}>
+                No travel experiences yet. Be the first to add one!
               </div>
-            ))}
+            )}
           </div>
         </div>
 
