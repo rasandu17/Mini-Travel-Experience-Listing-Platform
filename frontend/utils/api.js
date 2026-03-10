@@ -1,4 +1,5 @@
-const API_BASE_URL = 'http://localhost:5000/api';
+// Base API URL - uses environment variable in production, localhost in development
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 export const getToken = () => {
   if (typeof window !== 'undefined') return localStorage.getItem('token');
